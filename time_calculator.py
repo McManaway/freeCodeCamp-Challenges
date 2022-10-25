@@ -86,7 +86,7 @@ def add_time(start_time: str, duration: str, starting_day="") -> str:
         effective_days = days_later % 7
         new_day_index = day_index + effective_days
 
-        while new_day_index > 7:
+        while new_day_index >= 7:
             new_day_index -= 7
 
         e_day = days_of_the_week[new_day_index]
