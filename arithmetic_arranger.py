@@ -8,7 +8,6 @@
 def arithmetic_arranger(math_problems: list, answers=False) -> str:
     """
     Returns addition and subtraction problems formatted vertically.
-
     :param math_problems: A list of addition or subtraction problems.
            Each problem should be in quotes. Maximum number of
            problems is five (5).
@@ -22,6 +21,8 @@ def arithmetic_arranger(math_problems: list, answers=False) -> str:
     max_digits = 4
     acceptable_digits = "0123456789"
     problem_spacing = "    "
+    newline = "\n"
+    arranged_final = ""
 
     # Check for max list size
     if len(math_problems) > max_list_size:
@@ -63,48 +64,52 @@ def arithmetic_arranger(math_problems: list, answers=False) -> str:
         # Compare lengths of all items involved in constructing this
         # particular problem. This will dictate how many dashes are
         # printed and how far to the right to print each number.
-        if len(answer) > len(num_1):
+        if len(answer) > len(num_2) and len(answer) > len(num_1):
             problem_length.append(len(answer) + 1)
-        elif len(num_1) > len(num_2):
-            problem_length.append(len(num_1) + 2)
         else:
-            problem_length.append(len(num_2) + 2)
+            if len(num_1) > len(num_2):
+                problem_length.append(len(num_1) + 2)
+            else:
+                problem_length.append(len(num_2) + 2)
 
     # PROBLEM CONSTRUCTION
     # Need to print 4 lines: top, bottom, dashes, answer
     # Top
     for i in range(len(numbers)):
-        print(" "*(problem_length[i] - len(numbers[i][0])),
-              numbers[i][0], sep="", end="")
+        arranged_final += " "*(problem_length[i] - len(numbers[i][0]))
+        arranged_final += f"{numbers[i][0]}"
         if i != len(numbers) - 1:
-            print(problem_spacing, sep="", end="")
-    print()
+            arranged_final += problem_spacing
+    arranged_final += newline
 
     # Bottom
     for i in range(len(numbers)):
-        print(numbers[i][1], sep="", end="")
-        print(" "*(problem_length[i] - len(numbers[i][2]) - 1),
-              numbers[i][2], sep="", end="")
+        arranged_final += f"{numbers[i][1]}"
+        num_spaces = problem_length[i] - len(numbers[i][2]) - 1
+        arranged_final += " "*(num_spaces)
+        arranged_final += f"{numbers[i][2]}"
+
         if i != len(numbers) - 1:
-            print(problem_spacing, sep="", end="")
-    print()
+            arranged_final += problem_spacing
+    arranged_final += newline
 
     # Dashes
-    for x in problem_length:
-        print("_"*x, problem_spacing, sep="", end="")
-    print()
+    for i in range(len(problem_length)):
+        arranged_final += "-"*problem_length[i]
+        if i != len(problem_length) - 1:
+            arranged_final += problem_spacing
 
     # Answers
     if answers:
+        arranged_final += newline
         for i in range(len(numbers)):
-            print(" "*(problem_length[i] - len(answer_list[i])),
-                  answer_list[i], sep="", end="")
+            arranged_final += " "*(problem_length[i] - len(answer_list[i]))
+            arranged_final += answer_list[i]
             if i != len(numbers) - 1:
-                print(problem_spacing, sep="", end="")
-    print()
+                arranged_final += problem_spacing
 
     # If all checks pass:
-    return ""
+    return arranged_final
 
 
 # TESTING
